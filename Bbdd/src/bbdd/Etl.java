@@ -18,10 +18,17 @@ public class Etl {
     
     static List<Foto> allFotos;
     
-    public void prube () {
+    public static void main (String[] arg) {
         List<Foto> allPhoto = FotoDAO.getAllPhoto();
         String ruta;
-        ruta=RutaDAO.getStringRuta(allPhoto.get(0).getIdRuta());
+        
+        for (Foto f:allPhoto) {
+            f.setRuta(RutaDAO.getStringRuta(f.getIdRuta()));
+            System.out.println(f);
+        }
+      
+        
+        
     }
     
 }
