@@ -16,6 +16,8 @@ public class Foto {
     private String tamano;
     private String extension;
     private int idRuta;
+    
+    private String ruta;
 
     public Foto(int idFoto, String nombreFoto, String tamano, String extension, int idRuta) {
         this.idFoto = idFoto;
@@ -73,10 +75,22 @@ public class Foto {
         this.idRuta = idRuta;
     }
 
+    public String getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
+    }
+
     @Override
     public String toString() {
-        return "Foto{" + "idFoto=" + idFoto + ", nombreFoto=" + nombreFoto + ", tamano=" + tamano + ", extension=" + extension + ", idRuta=" + idRuta + '}';
+        return "Foto{" + "idFoto=" + idFoto + ", nombreFoto=" + nombreFoto + ", tamano=" + tamano + ", extension=" + extension + ", idRuta=" + idRuta + ", ruta=" + ruta + '}';
     }
+
+    
+    
+   
     
     
     

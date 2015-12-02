@@ -5,11 +5,30 @@
  */
 package bbdd;
 
+import Modelo.Clases.Foto;
+import Modelo.DAO.FotoDAO;
+import Modelo.DAO.RutaDAO;
+import java.util.List;
+
 /**
  *
  * @author inftel07
  */
 public class Etl {
     
+    static List<Foto> allFotos;
+    
+    public static void main (String[] arg) {
+        List<Foto> allPhoto = FotoDAO.getAllPhoto();
+        String ruta;
+        
+        for (Foto f:allPhoto) {
+            f.setRuta(RutaDAO.getStringRuta(f.getIdRuta()));
+            System.out.println(f);
+        }
+      
+        
+        
+    }
     
 }
