@@ -11,7 +11,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,18 +24,18 @@ import java.util.logging.Logger;
  */
 public class FotoDAO {
 
-    private static Conexion con = null;
-
+    private static Connection con = null;
+    private static List <Foto> listaFotos=null;
     //buscar una foto por ruta (absoluta) y nombre
     public static Foto getPhoto(String nombre_foto, String ruta, String extension) {
 
         Foto foto = null;
         int res;
-        Connection c = con.conectar();
+        con = Conexion.conectar();
 
         try {
             //llamar al procedimiento de comprobar_ruta
-            CallableStatement cs = c.prepareCall("{?=call COMPROBAR_RUTA(?)}");
+            CallableStatement cs = con.prepareCall("{?=call COMPROBAR_RUTA(?)}");
             cs.registerOutParameter(1, Types.INTEGER);
             cs.setString(2, ruta.toUpperCase());
             cs.execute(); //executeQuery por si no funciona
@@ -40,7 +43,7 @@ public class FotoDAO {
 
             if (res != -1) { //la ruta existe
 
-                PreparedStatement ps = c.prepareStatement("select * from Foto where nombre = ? and idRuta = ? and extension = ?");
+                PreparedStatement ps = con.prepareStatement("select * from Foto where nombre = ? and idRuta = ? and extension = ?");
                 ps.setString(1, nombre_foto);
                 ps.setInt(2, res);
                 ps.setString(3, extension);
@@ -64,11 +67,11 @@ public class FotoDAO {
     public static Foto insertPhoto(Foto foto, String ruta) {
 
         int id_foto;
-        Connection c = con.conectar();
+        con = Conexion.conectar();
 
         try {
             //llamar al procedimiento de comprobar_ruta
-            CallableStatement cs = c.prepareCall("{?=call INSERTIMAGE(?,?,?,?)}");
+            CallableStatement cs = con.prepareCall("{?=call INSERTIMAGE(?,?,?,?)}");
             cs.registerOutParameter(1, Types.INTEGER);
             cs.setString(2, ruta.toUpperCase());
             cs.setString(3, foto.getNombreFoto());
@@ -78,7 +81,7 @@ public class FotoDAO {
             id_foto = cs.getInt(1);
 
             foto.setIdFoto(id_foto);
-            PreparedStatement ps = c.prepareStatement("select idRuta from Foto where idFoto = ?");
+            PreparedStatement ps = con.prepareStatement("select idRuta from Foto where idFoto = ?");
             ps.setInt(1, id_foto);
             ResultSet rs = ps.executeQuery();
 
@@ -96,4 +99,26 @@ public class FotoDAO {
         return foto;
     }
 
+    public static List<Foto> getAllPhoto(){
+        Foto foto=null;
+
+        con=Conexion.conectar();
+        listaFotos= new ArrayList<>();
+        try{
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("select * from foto");
+
+            while (rs.next()) {
+                foto = new Foto(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5));
+                listaFotos.add(foto);
+            }
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+        }
+        
+        return listaFotos;
+
+    }
+    
+    
 }
