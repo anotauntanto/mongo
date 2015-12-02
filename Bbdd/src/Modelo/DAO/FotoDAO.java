@@ -31,7 +31,7 @@ public class FotoDAO {
 
         Foto foto = null;
         int res;
-        con = Conexion.conectar();
+        con = ConexionORACLE.conectar();
 
         try {
             //llamar al procedimiento de comprobar_ruta
@@ -67,7 +67,7 @@ public class FotoDAO {
     public static Foto insertPhoto(Foto foto, String ruta) {
 
         int id_foto;
-        con = Conexion.conectar();
+        con = ConexionORACLE.conectar();
 
         try {
             //llamar al procedimiento de comprobar_ruta
@@ -102,7 +102,7 @@ public class FotoDAO {
     public static List<Foto> getAllPhoto(){
         Foto foto=null;
 
-        con=Conexion.conectar();
+        con=ConexionORACLE.conectar();
         listaFotos= new ArrayList<>();
         try{
             Statement st = con.createStatement();

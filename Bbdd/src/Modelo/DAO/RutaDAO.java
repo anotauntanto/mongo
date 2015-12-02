@@ -19,7 +19,7 @@ public class RutaDAO {
     private final static String barra="/";
     
     public static String getStringRuta(int id_ruta) {
-        con = Conexion.conectar();
+        con = ConexionORACLE.conectar();
         int id_padre;
         String ruta="";
         String ruta_temp=null;

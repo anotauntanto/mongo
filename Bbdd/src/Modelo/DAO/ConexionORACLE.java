@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author inftel08
  */
-public class Conexion {
+public class ConexionORACLE {
     /*
      * To change this license header, choose License Headers in Project Properties.
      * To change this template file, choose Tools | Templates
@@ -23,7 +23,7 @@ public class Conexion {
      */
 
     /**
-     * Clase Conexion con la Base de Datos
+     * Clase ConexionORACLE con la Base de Datos
      */
     private static String url = "jdbc:oracle:thin:INFTEL15_4/INFTEL@olimpia.lcc.uma.es:1521:edgar";
     private static Connection con = null;
@@ -31,7 +31,7 @@ public class Conexion {
     /**
      * Constructor de la clase Conexion
      */
-    public Conexion() {
+    public ConexionORACLE() {
 
     }
 
@@ -71,7 +71,7 @@ public class Conexion {
         try {
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConexionORACLE.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

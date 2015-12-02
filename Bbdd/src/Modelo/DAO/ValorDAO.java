@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class ValorDAO {
     
-     private static Conexion con = null;
+     private static ConexionORACLE con = null;
     
     public static void insertMetadata(int id_foto, String directorio, String etiqueta, String valor) {
 

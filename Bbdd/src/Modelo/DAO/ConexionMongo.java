@@ -5,20 +5,19 @@
  */
 package Modelo.DAO;
 
-import Modelo.Clases.Foto;
+import com.mongodb.MongoClient;
 
 /**
  *
  * @author inftel08
  */
-public class EtiquetaDAO {
+public class ConexionMongo {
     
-    private static ConexionORACLE con = null;
+    private String direccion = "192.168.183.55";
+    private long port = 27017;
     
-     public static Foto insertMetadata(Foto foto, String ruta) {
-         return  null;
-         
-     }
-
+    MongoClient mongoClient;
+    
+    
     
 }
