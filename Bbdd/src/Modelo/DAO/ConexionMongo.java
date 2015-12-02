@@ -6,6 +6,7 @@
 package Modelo.DAO;
 
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 
 /**
  *
@@ -13,10 +14,21 @@ import com.mongodb.MongoClient;
  */
 public class ConexionMongo {
     
-    private String direccion = "192.168.183.55";
-    private long port = 27017;
+    private static String direccion = "192.168.183.55";
+    private static long port = 27017;
+    private static MongoClient mongoClient;
+    private static MongoDatabase db;
     
-    MongoClient mongoClient;
+    public static synchronized MongoDatabase conectar() {
+
+        if (mongoClient == null) {
+            
+            db = mongoClient.getDatabase("test");
+                  
+        }
+        
+        return db;
+    }
     
     
     

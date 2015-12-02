@@ -31,10 +31,7 @@ public class pruebas {
     public static void main(String[] args) {
 
         
-        MongoDatabase db = mongoClient.getDatabase("test");
-        MongoCollection<Document> collection = db.getCollection("prueba");
-        Document prueba = new Document();
-        prueba.collection.insertOne(new Document()
+       /*
                 .append("id_foto", "1")
                 .append("nombreFoto", "prueba")
                 .append("tamano", "123")
@@ -51,7 +48,7 @@ public class pruebas {
         //MongoDatabase db = new 
         //MongoDatabase db = mongoClient.listDatabases()
         //db.createCollection("prueba");
-
+*/
     }
 
 }
