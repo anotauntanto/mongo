@@ -18,16 +18,21 @@ public class ConexionMongo {
     private static long port = 27017;
     private static MongoClient mongoClient;
     private static MongoDatabase db;
+    private static String nomColeccion = "prueba";
     
-    public static synchronized MongoDatabase conectar() {
+    public static synchronized MongoDatabase obtenerDataBase() {
 
         if (mongoClient == null) {
             
-            db = mongoClient.getDatabase("test");
-                  
+            db = mongoClient.getDatabase("test");                
         }
         
         return db;
+    }
+    
+    public static String getnomColeccion () {
+       
+        return nomColeccion;
     }
     
     

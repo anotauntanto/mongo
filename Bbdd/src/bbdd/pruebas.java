@@ -6,6 +6,7 @@
 package bbdd;
 
 import Modelo.Clases.Foto;
+import Modelo.DAO.ConexionMongo;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -22,14 +23,25 @@ import static java.util.Arrays.asList;
  */
 public class pruebas {
 
+    
     public void insertarFotoenColeccion (Foto foto) {
+        MongoDatabase db = ConexionMongo.obtenerDataBase();
+        Document imagen = new Document();
+      
         
+        imagen.append("id_foto", foto.getIdFoto())
+                .append("nombre_foto", foto.getNombreFoto())
+                .append ("tamaño", foto.getTamano())
+                .append ("extension", foto.getExtension())
+                .append ("nomre_ruta", foto.getTamano()) //
+                ));
+        db.createCollection(null)
         
         
     }
     
     public static void main(String[] args) {
-
+            
         
        /*
                 .append("id_foto", "1")
