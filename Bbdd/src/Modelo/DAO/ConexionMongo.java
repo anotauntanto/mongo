@@ -5,6 +5,7 @@
  */
 package Modelo.DAO;
 
+import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
@@ -19,6 +20,18 @@ public class ConexionMongo {
     private static MongoClient mongoClient;
     private static MongoDatabase db;
     private static String nomColeccion = "prueba";
+    private static String nomDatabase = "test";
+    
+    
+    public static synchronized MongoClient obtenerConexion() {
+
+        if (mongoClient == null) {
+            mongoClient = new MongoClient( direccion , 27017 );
+            db = mongoClient.getDatabase("test");                
+        }
+        
+        return mongoClient;
+    }
     
     public static synchronized MongoDatabase obtenerDataBase() {
 
@@ -33,6 +46,11 @@ public class ConexionMongo {
     public static String getnomColeccion () {
        
         return nomColeccion;
+    }
+    
+    public static String getnomDB () {
+       
+        return nomDatabase;
     }
     
     

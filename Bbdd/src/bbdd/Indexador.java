@@ -47,16 +47,18 @@ public class Indexador {
                     Image img = ImageIO.read(ficheros[i]);
                     if (img != null) {
 
-                        String extension = null, tamano;
+                        String extension = null, tamano, nombre;
                         System.out.println("\n");
-                        System.out.println("Foto " + ficheros[i].getName());
+                        System.out.println("Foto " + ficheros[i]);
 
                         int pos_ext = (ficheros[i].getName()).lastIndexOf(".");
                         //if (pos_ext > 0) {
                         extension = ficheros[i].getName().substring(pos_ext + 1);
+                        nombre = ficheros[i].getName().substring(0, pos_ext);
+                        System.out.println("Nombre foto " + nombre);
                         //}
                         tamano = Long.toString(ficheros[i].length()) + 'B';
-                        Foto photo = new Foto(ficheros[i].getName(), tamano, extension);
+                        Foto photo = new Foto(nombre, tamano, extension);
                         FotoDAO.insertPhoto(photo, ficheros[i].getParent());
 
                         metadataImage(ficheros[i], photo.getIdFoto());
