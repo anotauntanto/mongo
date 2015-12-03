@@ -23,7 +23,7 @@ public class ConexionMongo {
     public static synchronized MongoDatabase obtenerDataBase() {
 
         if (mongoClient == null) {
-            
+            mongoClient = new MongoClient( direccion , 27017 );
             db = mongoClient.getDatabase("test");                
         }
         
