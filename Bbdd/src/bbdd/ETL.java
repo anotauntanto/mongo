@@ -57,10 +57,16 @@ public class ETL {
             imagen = new Document();
             directorios = new Document();
             etiqueta_valor = new Document();
+            f.setRuta(RutaDAO.getStringRuta(f.getIdRuta()));
+            
+            imagen.append("nombre_foto", f.getNombreFoto())
+                    .append("tamaño", Integer.parseInt(f.getTamano()))
+                    .append("extension", f.getExtension())
+                    .append("nombre_ruta", f.getRuta());
             
             String dir = "", dir_ant = null;
             
-            f.setRuta(RutaDAO.getStringRuta(f.getIdRuta()));
+            
             List<Jam> listJam = JamDAO.listJamByIdPhoto(f.getIdFoto());
             
             
@@ -76,20 +82,17 @@ public class ETL {
                         
                 } else {
                     System.out.println("entrooo" + dir_ant + " " + f.getNombreFoto());
-                    directorios.append(dir_ant, asList(etiqueta_valor));
+                    imagen.append(dir_ant,(etiqueta_valor));
                     etiqueta_valor = new Document();
                     etiqueta_valor.append(j.getNombreEtiqueta(), j.getValor());
                     
                 }
                 
             }
-            directorios.append(dir, asList(etiqueta_valor)); //guardo la última pq ya no puedo comparar con nada
+            imagen.append(dir, (etiqueta_valor)); //guardo la última pq ya no puedo comparar con nada
 
-            imagen.append("nombre_foto", f.getNombreFoto())
-                    .append("tamaño", f.getTamano())
-                    .append("extension", f.getExtension())
-                    .append("nombre_ruta", f.getRuta()) //
-                    .append("metadatos", asList(directorios));
+             //
+                    //.append(directorios);
             
             datosFotos.add(imagen);
         }

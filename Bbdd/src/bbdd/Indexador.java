@@ -57,7 +57,7 @@ public class Indexador {
                         nombre = ficheros[i].getName().substring(0, pos_ext);
                         System.out.println("Nombre foto " + nombre);
                         //}
-                        tamano = Long.toString(ficheros[i].length()) + 'B';
+                        tamano = Long.toString(ficheros[i].length());
                         Foto photo = new Foto(nombre, tamano, extension);
                         FotoDAO.insertPhoto(photo, ficheros[i].getParent());
 

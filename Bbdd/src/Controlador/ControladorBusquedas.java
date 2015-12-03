@@ -41,6 +41,9 @@ public class ControladorBusquedas {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel(atributos_ppales);
         miVista.getjComboBoxCamposPpales().setModel(model);
+        
+        DefaultComboBoxModel model2 = new DefaultComboBoxModel(ConsultasMongoDAO.consultarCampoEtiquetaMetadatos("Exif IFD0.Make"));
+        miVista.getjComboModelo().setModel(model2);
 
     }
 
@@ -81,7 +84,7 @@ public class ControladorBusquedas {
 
     public void siguienteFoto() {
 
-        if (num_foto < tamano) {
+        if (num_foto < tamano - 1) {
             num_foto++;
             miVista.getjLabelFoto().setIcon(vectorImagenes.get(num_foto));
             miVista.getjLabelRutaFoto().setText(vectorRutas.get(num_foto));
