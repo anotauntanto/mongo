@@ -243,6 +243,55 @@ public class ConsultasMongoDAO {
 
         return miVector;
     }
+    
+    
+   
+    public static DBCursor consultarPorClave(String clave) {
+
+        //System.out.println(directorio);
+
+        //Get a new connection to the db assuming that it is running 
+        MongoClient m1 = ConexionMongo.obtenerConexion();
+
+        //use test as a database,use your database here
+        DB db = m1.getDB(ConexionMongo.getnomDB());
+
+        //fetch the collection object ,car is used here,use your own 
+        DBCollection coll = db.getCollection(ConexionMongo.getnomColeccion());
+
+        //call distinct method and store the result in list l1
+        DBObject query = new BasicDBObject ("$ne", null);
+        DBObject directorio_ = new BasicDBObject (clave, query);
+        
+        DBCursor find = coll.find(directorio_);
+
+        return find;
+    }
+    
+    public static DBCursor consultarPorDirectorioyEtiqueta(String directorio, String etiqueta) {
+
+        System.out.println(directorio + " " + etiqueta);
+        String clave = directorio + '.' + etiqueta;
+        //Get a new connection to the db assuming that it is running 
+        MongoClient m1 = ConexionMongo.obtenerConexion();
+
+        //use test as a database,use your database here
+        DB db = m1.getDB(ConexionMongo.getnomDB());
+
+        //fetch the collection object ,car is used here,use your own 
+        DBCollection coll = db.getCollection(ConexionMongo.getnomColeccion());
+
+        //call distinct method and store the result in list l1
+        DBObject query = new BasicDBObject ("$ne", null);
+        DBObject etiqueta_ = new BasicDBObject (clave, query); 
+        //DBObject directorio_ = new BasicDBObject (directorio, etiqueta_);
+        DBCursor find = coll.find(etiqueta_);
+        
+
+        return find;
+    }
+    
+    
 
     /*public static void main (String[] args) {
      consultarCampoModeloEtiquetaMetadatos("Exif IFD0.Make", "LGE");

@@ -48,8 +48,6 @@ public class ControladorBusquedas {
     public static String getExtension() {
         return extension;
     }
-    
-    
 
     public ControladorBusquedas(Vista_busqueda miVista) {
 
@@ -76,6 +74,8 @@ public class ControladorBusquedas {
         vectorRutas = new Vector<>();
 
         while (find.hasNext()) {
+            
+            System.out.println("holaaaaaa");
             DBObject next = find.next();
 
             nombre = (String) next.get("nombre_foto");
@@ -164,6 +164,58 @@ public class ControladorBusquedas {
 
         DBCursor find = ConsultasMongoDAO.obtenerFotosCamara(EtiquetaMarca, miVista.getjComboMarca().getSelectedItem().toString(), EtiquetaModelo, miVista.getjComboModelo().getSelectedItem().toString());
         pintar(find);
+
+    }
+
+    public void busquedaMetadatos() {
+
+        int num_campos = 0;
+        String directorio = null, etiqueta = null, valor = null;
+        DBCursor find = null;
+
+        if (miVista.getCampoDirectorio().getText().length()!=0) {
+            directorio = miVista.getCampoDirectorio().getText();
+            System.out.println(directorio);
+            num_campos++;
+        }
+
+        if (miVista.getCampoEtiqueta().getText().length()!=0) {
+            etiqueta = miVista.getCampoEtiqueta().getText();
+            System.out.println(etiqueta);
+            num_campos++;
+        }
+
+        if (miVista.getCampoValor().getText().length()!=0) {
+            valor = miVista.getCampoValor().getText();
+            System.out.println(valor);
+            num_campos++;
+        }
+
+        switch (num_campos) {
+
+            case 1:
+                System.out.println("eeeeei directorio");
+                find = ConsultasMongoDAO.consultarPorClave(directorio);
+                break;
+
+            case 2:
+                System.out.println("eeeeei etiqueta");
+                String clave1 = directorio + '.' + etiqueta;
+                find = ConsultasMongoDAO.consultarPorClave(clave1);
+                break;
+
+            case 3:
+                System.out.println("eeeeei valor");
+                String clave2 = directorio + '.' + etiqueta;
+                find = ConsultasMongoDAO.consultarUnCampoPrincipal(clave2, valor);
+                break;
+
+        }
+        
+        if (find!=null) {
+            pintar(find);
+        }
+        
 
     }
 }

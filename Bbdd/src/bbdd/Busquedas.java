@@ -30,11 +30,9 @@ public class Busquedas {
     public static void main(String[] args) {
 
         /*MongoClient mongoClient = ConexionMongo.obtenerConexion();
-        MongoDatabase db = ConexionMongo.obtenerDataBase();
+        MongoDatabase db = ConexionMongo.obtenerDataBase();*/
         
-        /*MongoClient mongoClient = new MongoClient( "192.168.183.55" , 27017 );
-        DB db = mongoClient.getDB("test");
-        DBCollection collection = db.getCollection("prueba");*/
+        
 
 
         /*CONSULTA BÁSICA
@@ -68,18 +66,23 @@ public class Busquedas {
          });*/
         //DBObject query = new BasicDBObject("extension","JPG");
         
-        /*
+        MongoClient mongoClient = new MongoClient( "192.168.183.55" , 27017 );
+        DB db = mongoClient.getDB("test");
+        DBCollection collection = db.getCollection("prueba");
+        
         DBObject etiqueta_valor = new BasicDBObject ("$ne", null);
         DBObject etiqueta = new BasicDBObject ("Make", etiqueta_valor);
         DBObject directorio = new BasicDBObject ("Exif IFD0", etiqueta);
         
-        DBCursor find = db.getCollection("pruebas").find(directorio);
+        System.out.println("eeei");
+        DBCursor find = collection.find(directorio);
                
         while(find.hasNext()) {
             DBObject obj = find.next();
-            System.out.println(obj.get("Exif IFD0.Make"));
             System.out.println(obj);
-        }*/Vector<String> miVector = new Vector<>();
+        }
+        
+        /*Vector<String> miVector = new Vector<>();
         
         
         //Get a new connection to the db assuming that it is running 
@@ -101,7 +104,7 @@ public class Busquedas {
                 
             }
             
-            System.out.println(miVector);
+            System.out.println(miVector);*/
     }
 
 }
