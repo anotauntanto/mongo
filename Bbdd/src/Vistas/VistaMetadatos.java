@@ -17,9 +17,9 @@ public class VistaMetadatos extends javax.swing.JFrame {
     /**
      * Creates new form VistaMetadatos
      */
-    public VistaMetadatos(Vista_busqueda vista) {
+    public VistaMetadatos(Vista_busqueda vista, String ruta_completa) {
         this.vista = vista;
-        cm = new ControladorMetadatos(this);
+        cm = new ControladorMetadatos(this, ruta_completa);
         
         initComponents();
         

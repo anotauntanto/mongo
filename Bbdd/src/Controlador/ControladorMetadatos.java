@@ -21,8 +21,10 @@ public class ControladorMetadatos {
     private VistaMetadatos miVista;
     private String id_foto = null;
     
-    public ControladorMetadatos(VistaMetadatos miVista) {
+    public ControladorMetadatos(VistaMetadatos miVista, String ruta_completa) {
 
+        System.out.println(ruta_completa);
+        /*
         this.miVista = miVista;
         System.out.println(ControladorBusquedas.getNombre()+ " " + ControladorBusquedas.getRuta() + " " + ControladorBusquedas.getExtension());
         DBCursor cursor = ConsultasMongoDAO.obtenerFoto(ControladorBusquedas.getNombre(), ControladorBusquedas.getRuta(), ControladorBusquedas.getExtension());
@@ -42,13 +44,13 @@ public class ControladorMetadatos {
                 if (!(s.toString().equals("nombre_ruta") || s.toString().equals("nombre_foto") || s.toString().equals("extension") || s.toString().equals("tamaño") || s.toString().equals("_id"))) {
         
                     /*System.out.println(s.toString());
-                    System.out.println(toMap.get(s).toString());*/
+                    System.out.println(toMap.get(s).toString());
                     ConsultasMongoDAO.obtenerMetadatosPorDirectorio(id_foto, s.toString());
                     
                 } 
             }
            
-         }  
+         } */ 
         
         
     }
