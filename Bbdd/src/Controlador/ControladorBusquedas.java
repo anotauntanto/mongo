@@ -8,6 +8,8 @@ package Controlador;
 import Vistas.Vista_busqueda;
 import Modelo.DAO.ConsultasMongoDAO;
 import com.mongodb.Block;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.client.FindIterable;
 import java.awt.*;
 import java.util.Vector;
@@ -27,6 +29,27 @@ public class ControladorBusquedas {
     private Vector<String> vectorRutas;
     private int tamano;
     private int origen;
+    private String EtiquetaMarca = "Exif IFD0.Make";
+    private String EtiquetaModelo = "Exif IFD0.Model";
+
+    private static String nombre;
+    private static String ruta;
+    private static String extension;
+    private static String nombre_fichero;
+
+    public static String getNombre() {
+        return nombre;
+    }
+
+    public static String getRuta() {
+        return ruta;
+    }
+
+    public static String getExtension() {
+        return extension;
+    }
+    
+    
 
     public ControladorBusquedas(Vista_busqueda miVista) {
 
@@ -41,51 +64,78 @@ public class ControladorBusquedas {
 
         DefaultComboBoxModel model = new DefaultComboBoxModel(atributos_ppales);
         miVista.getjComboBoxCamposPpales().setModel(model);
-        
-        DefaultComboBoxModel model2 = new DefaultComboBoxModel(ConsultasMongoDAO.consultarCampoEtiquetaMetadatos("Exif IFD0.Make"));
-        miVista.getjComboModelo().setModel(model2);
+
+        DefaultComboBoxModel model2 = new DefaultComboBoxModel(ConsultasMongoDAO.consultarCampoMarcaEtiquetaMetadatos(EtiquetaMarca));
+        miVista.getjComboMarca().setModel(model2);
 
     }
 
-    public void enviarConsultaSimple() {
-
-        String valor = miVista.getCampoValorSimple().getText();
-        String clave = miVista.getjComboBoxCamposPpales().getSelectedItem().toString();
-        FindIterable<Document> find = ConsultasMongoDAO.consultarUnCampoPrincipal(clave, valor);
+    public void pintar(DBCursor find) {
 
         vectorImagenes = new Vector<>();
         vectorRutas = new Vector<>();
 
-        find.forEach(new Block<Document>() {
-            @Override
-            public void apply(final Document document) {
-                String nombre = (String) document.get("nombre_foto");
-                String ruta = (String) document.get("nombre_ruta");
-                String extension = (String) document.get("extension");
-                String nombre_fichero = ruta + '/' + nombre + '.' + extension;
-                //System.out.println(nombre_fichero);
+        while (find.hasNext()) {
+            DBObject next = find.next();
 
-                ImageIcon img = new ImageIcon(nombre_fichero);
+            nombre = (String) next.get("nombre_foto");
+            ruta = (String) next.get("nombre_ruta");
+            extension = (String) next.get("extension");
+            nombre_fichero = ruta + '/' + nombre + '.' + extension;
+            //System.out.println(nombre_fichero);
 
-                Icon icono = new ImageIcon(img.getImage().getScaledInstance(miVista.getjLabelFoto().getWidth(), miVista.getjLabelFoto().getHeight(), Image.SCALE_DEFAULT));
-                vectorImagenes.add(icono);
-                vectorRutas.add(nombre_fichero);
+            ImageIcon img = new ImageIcon(nombre_fichero);
 
-            }
-        });
+            Icon icono = new ImageIcon(img.getImage().getScaledInstance(miVista.getjLabelFoto().getWidth(), miVista.getjLabelFoto().getHeight(), Image.SCALE_DEFAULT));
+            vectorImagenes.add(icono);
+            vectorRutas.add(nombre_fichero);
+
+        }
 
         tamano = vectorImagenes.size();
         origen = 0;
         //pinta el primero
         num_foto = 0;
+        miVista.getjPosImagen().setText((num_foto + 1) + "/" + tamano);
         miVista.getjLabelFoto().setIcon(vectorImagenes.get(num_foto));
         miVista.getjLabelRutaFoto().setText(vectorRutas.get(num_foto));
+    }
+
+    public void enviarConsultaSimple() {
+
+        String valor = miVista.getCampoValorSimple().getText().toUpperCase();
+        String clave = miVista.getjComboBoxCamposPpales().getSelectedItem().toString();
+        DBCursor find = null;
+
+        switch (clave) {
+
+            case "nombre_foto":
+                find = ConsultasMongoDAO.consultarUnCampoParcial(clave, valor);
+                break;
+
+            case "tamaño":
+                find = ConsultasMongoDAO.consultarValoresMayores(clave, valor);
+                break;
+
+            case "extension":
+                find = ConsultasMongoDAO.consultarUnCampoPrincipal(clave, valor);
+                break;
+
+            case "nombre_ruta":
+
+                find = ConsultasMongoDAO.consultarUnCampoParcial(clave, valor);
+                break;
+        }
+
+        pintar(find);
+
     }
 
     public void siguienteFoto() {
 
         if (num_foto < tamano - 1) {
             num_foto++;
+            miVista.getjPosImagen().setText((num_foto + 1) + "/" + tamano);
             miVista.getjLabelFoto().setIcon(vectorImagenes.get(num_foto));
             miVista.getjLabelRutaFoto().setText(vectorRutas.get(num_foto));
         }
@@ -96,8 +146,24 @@ public class ControladorBusquedas {
 
         if (num_foto > origen) {
             num_foto--;
+            miVista.getjPosImagen().setText((num_foto + 1) + "/" + tamano);
             miVista.getjLabelFoto().setIcon(vectorImagenes.get(num_foto));
             miVista.getjLabelRutaFoto().setText(vectorRutas.get(num_foto));
         }
+    }
+
+    public void recuperarModeloCamara() {
+
+        Vector<String> pi = ConsultasMongoDAO.consultarCampoModeloEtiquetaMetadatos(EtiquetaMarca, miVista.getjComboMarca().getSelectedItem().toString());
+        DefaultComboBoxModel model2 = new DefaultComboBoxModel(pi);
+        miVista.getjComboModelo().setModel(model2);
+
+    }
+
+    public void ejecutarBusquedaFotoCamara() {
+
+        DBCursor find = ConsultasMongoDAO.obtenerFotosCamara(EtiquetaMarca, miVista.getjComboMarca().getSelectedItem().toString(), EtiquetaModelo, miVista.getjComboModelo().getSelectedItem().toString());
+        pintar(find);
+
     }
 }
